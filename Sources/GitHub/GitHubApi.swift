@@ -3,8 +3,6 @@ enum ApiError: Error {
 }
 
 public struct GitHubApi {
-    static let baseUrl: String = "https://api.github.com"
-
     public let pullRequest: PullRequestApi
     public let status: StatusApi
 
@@ -29,7 +27,7 @@ public struct GitHubApi {
             if let head = pullRequest.head {
                 json["sha"] = head.sha
             }
-            return try client.put(url: url, json: json)
+            return try client.put(url: url, object: json)
         }
     }
 
@@ -73,14 +71,14 @@ public struct GitHubApi {
         }
 
         public func set(_ status: Status, info: StatusInfo, for commit: Commit) throws {
-            let url = "\(baseUrl)/repos/\(commit.repo.fullName)/statuses/\(commit.sha)"
+            let path = "/repos/\(commit.repo.fullName)/statuses/\(commit.sha)"
             let updateStatus = UpdateStatus(
                 state: status.rawValue,
                 targetUrl: info.targetUrl,
                 description: info.description,
                 context: info.context)
 
-            let result: State = try client.post(url: url, json: updateStatus)
+            let result: State = try client.post(path: path, object: updateStatus)
             guard result.state == status.rawValue else {
                 throw ApiError.invalidSetStatusResult
             }

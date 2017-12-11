@@ -1,6 +1,8 @@
 import HTTP
 
 public class GitHubClient {
+    static let baseUrl: String = "https://api.github.com"
+
     private let client: Client
     private let token: String?
 
@@ -17,16 +19,17 @@ public class GitHubClient {
         return try client.makeRequest(request)
     }
 
-    func post<T: Encodable, U: Decodable>(url: String, json: T) throws -> U {
-        var request = try Request(method: .post, url: try URL(url), json: json)
+    func post<T: Encodable, U: Decodable>(path: String, object: T) throws -> U {
+        let url = try URL(GitHubClient.baseUrl + path)
+        var request = try Request(method: .post, url: url, body: object)
         if let token = token {
             request.authorization = .token(credentials: token)
         }
         return try client.makeRequest(request)
     }
 
-    func put<T: Encodable, U: Decodable>(url: String, json: T) throws -> U {
-        var request = try Request(method: .put, url: try URL(url), json: json)
+    func put<T: Encodable, U: Decodable>(url: String, object: T) throws -> U {
+        var request = try Request(method: .put, url: try URL(url), body: object)
         if let token = token {
             request.authorization = .token(credentials: token)
         }
