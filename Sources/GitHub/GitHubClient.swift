@@ -15,8 +15,8 @@ public class GitHubClient {
         self.token = token
     }
 
-    func get<T: Decodable>(url: String) throws -> T {
-        var request = Request(method: .get, url: try URL(url))
+    func makeRequest<T: Decodable>(_ request: Request) throws -> T {
+        var request = request
         if let token = token {
             request.authorization = .token(credentials: token)
         }
@@ -24,22 +24,18 @@ public class GitHubClient {
         return try JSON.decode(T.self, from: response.rawBody ?? [])
     }
 
+    func get<T: Decodable>(path: String) throws -> T {
+        return try makeRequest(Request(method: .get, url: URL(path)))
+
+    }
+
     func post<T: Encodable, U: Decodable>(path: String, object: T) throws -> U {
-        let url = try URL(path)
-        var request = try Request(method: .post, url: url, body: object)
-        if let token = token {
-            request.authorization = .token(credentials: token)
-        }
-        let response = try client.makeRequest(request)
-        return try JSON.decode(U.self, from: response.rawBody ?? [])
+        let request = try Request(method: .post, url: URL(path), body: object)
+        return try makeRequest(request)
     }
 
     func put<T: Encodable, U: Decodable>(url: String, object: T) throws -> U {
-        var request = try Request(method: .put, url: try URL(url), body: object)
-        if let token = token {
-            request.authorization = .token(credentials: token)
-        }
-        let response = try client.makeRequest(request)
-        return try JSON.decode(U.self, from: response.rawBody ?? [])
+        let request = try Request(method: .put, url: URL(url), body: object)
+        return try makeRequest(request)
     }
 }

@@ -17,8 +17,8 @@ public struct GitHubApi {
             self.client = client
         }
 
-        public func get(_ url: String) throws -> PullRequest {
-            return try client.get(url: url)
+        public func get(_ path: String) throws -> PullRequest {
+            return try client.get(path: path)
         }
 
         public func merge(_ pullRequest: PullRequest) throws -> MergeResult {
