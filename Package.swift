@@ -18,7 +18,7 @@ let package = Package(
             .branch("master")),
     ],
     targets: [
-        .target(name: "GitHub", dependencies: ["HTTP", "Client", "Async"]),
+        .target(name: "GitHub", dependencies: ["HTTP", "Async"]),
         .testTarget(
             name: "GitHubTests",
             dependencies: ["GitHub", "AsyncDispatch", "Test"])

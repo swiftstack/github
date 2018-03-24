@@ -6,16 +6,16 @@ import Foundation
 
 class ClientTests: TestCase {
     override func setUp() {
-        AsyncDispatch().registerGlobal()
+        async.use(Dispatch.self)
     }
 
     func testGetPullRequest() {
         async.task {
             do {
                 let github = GitHubApi(client: try GitHubClient())
-                let url = "https://api.github.com/repos/apple/swift/pulls/1"
+                let url = "/repos/apple/swift/pulls/1"
                 let pullRequest = try github.pullRequest.get(url)
-                assertEqual(pullRequest.url, url)
+                assertEqual(pullRequest.url, "https://api.github.com\(url)")
                 assertNotNil(pullRequest.mergeCommitSHA)
             } catch {
                 fail(String(describing: error))

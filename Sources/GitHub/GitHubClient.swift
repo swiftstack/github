@@ -1,6 +1,5 @@
 import JSON
 import HTTP
-import Client
 
 public class GitHubClient {
     // static let baseUrl: String = "https://api.github.com"
@@ -16,26 +15,24 @@ public class GitHubClient {
     }
 
     func makeRequest<T: Decodable>(_ request: Request) throws -> T {
-        var request = request
         if let token = token {
             request.authorization = .token(credentials: token)
         }
         let response = try client.makeRequest(request)
-        return try JSON.decode(T.self, from: response.rawBody ?? [])
+        return try JSON.decode(T.self, from: response.bytes ?? [])
     }
 
     func get<T: Decodable>(path: String) throws -> T {
-        return try makeRequest(Request(method: .get, url: URL(path)))
-
+        return try makeRequest(Request(url: URL(path), method: .get))
     }
 
     func post<T: Encodable, U: Decodable>(path: String, object: T) throws -> U {
-        let request = try Request(method: .post, url: URL(path), body: object)
+        let request = try Request(url: URL(path), method: .post, body: object)
         return try makeRequest(request)
     }
 
     func put<T: Encodable, U: Decodable>(url: String, object: T) throws -> U {
-        let request = try Request(method: .put, url: URL(url), body: object)
+        let request = try Request(url: URL(url), method: .put, body: object)
         return try makeRequest(request)
     }
 }
