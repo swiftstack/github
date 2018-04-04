@@ -1,12 +1,11 @@
 import Test
-import Async
-import AsyncDispatch
-import Foundation
+import Fiber
+@testable import Async
 @testable import GitHub
 
 class ClientTests: TestCase {
     override func setUp() {
-        async.use(Dispatch.self)
+        async.setUp(Fiber.self)
     }
 
     func testGetPullRequest() {

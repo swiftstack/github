@@ -16,11 +16,14 @@ let package = Package(
         .package(
             url: "https://github.com/swift-stack/test.git",
             .branch("master")),
+        .package(
+            url: "https://github.com/swift-stack/fiber.git",
+            .branch("master")),
     ],
     targets: [
         .target(name: "GitHub", dependencies: ["HTTP", "Async"]),
         .testTarget(
             name: "GitHubTests",
-            dependencies: ["GitHub", "AsyncDispatch", "Test"])
+            dependencies: ["GitHub", "Fiber", "Test"])
     ]
 )
