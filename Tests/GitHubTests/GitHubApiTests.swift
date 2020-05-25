@@ -2,7 +2,7 @@ import Test
 @testable import GitHub
 
 class GitHubApiTests: TestCase {
-    func testUpdateStatus() {
+    func testUpdateStatus() throws {
         let status = GitHubApi.StatusApi.UpdateStatus(
             state: "state",
             targetUrl: "url",
@@ -10,10 +10,10 @@ class GitHubApiTests: TestCase {
             context: "context")
 
         let encoder = TestEncoder()
-        assertNoThrow(try status.encode(to: encoder))
+        try status.encode(to: encoder)
 
         let expected = ["state", "target_url", "description", "context"]
-        assertEqual(encoder.keys, expected)
+        expect(encoder.keys == expected)
     }
 }
 
