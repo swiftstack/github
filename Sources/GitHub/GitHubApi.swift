@@ -1,4 +1,5 @@
 enum ApiError: Error {
+    case commitRepositoryIsNil
     case invalidSetStatusResult
 }
 
@@ -73,7 +74,10 @@ public struct GitHubApi {
         }
 
         public func set(_ status: Status, info: StatusInfo, for commit: Commit) throws {
-            let path = "/repos/\(commit.repo.fullName)/statuses/\(commit.sha)"
+            guard let name = commit.repo?.fullName else {
+                throw ApiError.commitRepositoryIsNil
+            }
+            let path = "/repos/\(name)/statuses/\(commit.sha)"
             let updateStatus = UpdateStatus(
                 state: status.rawValue,
                 targetUrl: info.targetUrl,
