@@ -2,15 +2,11 @@ import JSON
 import HTTP
 
 public class GitHubClient {
-    // static let baseUrl: String = "https://api.github.com"
-    let proxyHost = "127.0.0.1"
-    let proxyPort = 6543
-
     private let client: Client
     private let token: String?
 
     public init(token: String? = nil) throws {
-        self.client = Client(host: proxyHost, port: proxyPort)
+        self.client = Client(host: "api.github.com", port: 443)
         self.token = token
     }
 
