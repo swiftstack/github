@@ -8,12 +8,14 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "HTTP"),
-        .package(name: "Async"),
+        .package(name: "AIO"),
         .package(name: "Test"),
         .package(name: "Fiber"),
     ],
     targets: [
-        .target(name: "GitHub", dependencies: ["HTTP", "Async"]),
+        .target(name: "GitHub", dependencies: [
+            "HTTP",
+            .product(name: "Async", package: "AIO")]),
         .testTarget(
             name: "GitHubTests",
             dependencies: ["GitHub", "Fiber", "Test"])
