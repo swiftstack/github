@@ -8,16 +8,14 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "HTTP"),
-        .package(name: "AIO"),
+        .package(name: "JSON"),
         .package(name: "Test"),
-        .package(name: "Fiber"),
+        .package(name: "Event"),
     ],
     targets: [
         .target(
             name: "GitHub",
-            dependencies: [
-                "HTTP",
-                .product(name: "Async", package: "AIO")],
+            dependencies: ["HTTP"],
             swiftSettings: [
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]),

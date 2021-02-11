@@ -20,17 +20,17 @@ public struct GitHubApi {
             self.client = client
         }
 
-        public func get(_ path: String) throws -> PullRequest {
-            return try client.get(path: path)
+        public func get(_ path: String) async throws -> PullRequest {
+            return try await client.get(path: path)
         }
 
-        public func merge(_ pullRequest: PullRequest) throws -> MergeResult {
+        public func merge(_ pullRequest: PullRequest) async throws -> MergeResult {
             let url = pullRequest.url.appending("/merge")
             var json = [String : String]()
             if let head = pullRequest.head {
                 json["sha"] = head.sha
             }
-            return try client.put(url: url, object: json)
+            return try await client.put(url: url, object: json)
         }
     }
 
@@ -73,7 +73,7 @@ public struct GitHubApi {
             }
         }
 
-        public func set(_ status: Status, info: StatusInfo, for commit: Commit) throws {
+        public func set(_ status: Status, info: StatusInfo, for commit: Commit) async throws {
             guard let name = commit.repo?.fullName else {
                 throw ApiError.commitRepositoryIsNil
             }
@@ -84,7 +84,7 @@ public struct GitHubApi {
                 description: info.description,
                 context: info.context)
 
-            let result: State = try client.post(path: path, object: updateStatus)
+            let result: State = try await client.post(path: path, object: updateStatus)
             guard result.state == status.rawValue else {
                 throw ApiError.invalidSetStatusResult
             }
