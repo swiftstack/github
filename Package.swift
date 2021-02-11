@@ -13,12 +13,20 @@ let package = Package(
         .package(name: "Fiber"),
     ],
     targets: [
-        .target(name: "GitHub", dependencies: [
-            "HTTP",
-            .product(name: "Async", package: "AIO")]),
+        .target(
+            name: "GitHub",
+            dependencies: [
+                "HTTP",
+                .product(name: "Async", package: "AIO")],
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
+            ]),
         .testTarget(
             name: "GitHubTests",
-            dependencies: ["GitHub", "Fiber", "Test"])
+            dependencies: ["GitHub", "Fiber", "Test"],
+            swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
+            ])
     ]
 )
 
