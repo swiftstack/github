@@ -15,7 +15,10 @@ public class GitHubClient {
             request.authorization = .token(credentials: token)
         }
         let response = try await client.makeRequest(request)
-        return try await JSON.decode(T.self, from: response.bytes ?? [])
+        guard case .input(let stream) = response.body else {
+            throw Error.invalidResponse
+        }
+        return try await JSON.decode(T.self, from: stream)
     }
 
     func get<T: Decodable>(path: String) async throws -> T {
