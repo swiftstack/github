@@ -17,6 +17,7 @@ let package = Package(
             name: "GitHub",
             dependencies: ["HTTP"],
             swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]),
     ]
@@ -40,6 +41,7 @@ func addTest(target: String, name: String) {
             dependencies: ["GitHub", "Event", "JSON", "Test"],
             path: "Tests/\(target)/\(name)",
             swiftSettings: [
+                .unsafeFlags(["-Xfrontend", "-disable-availability-checking"]),
                 .unsafeFlags(["-Xfrontend", "-enable-experimental-concurrency"])
             ]))
 }
