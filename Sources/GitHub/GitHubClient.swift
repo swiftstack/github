@@ -6,7 +6,7 @@ public class GitHubClient {
     private let token: String?
 
     public init(token: String? = nil) throws {
-        self.client = Client(host: "api.github.com", port: 443)
+        self.client = try Client(url: GitHubApi.baseURL)
         self.token = token
     }
 

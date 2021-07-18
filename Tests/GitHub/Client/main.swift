@@ -9,7 +9,7 @@ test.case("GetPullRequest") {
         let url = "/repos/apple/swift/pulls/1"
         let pullRequest = try await github.pullRequest.get(url)
         expect(pullRequest.url == "https://api.github.com\(url)")
-        expect(pullRequest.mergeCommitSHA != nil)
+        expect(pullRequest.mergeCommitSHA == "24643eb0ad928308bf1784ec46fe9288b414e8a5")
 
         await loop.terminate()
     }
