@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "GitHub",
     products: [
-        .library(name: "GitHub", targets: ["GitHub"])
+        .library(name: "GitHub", targets: ["GitHub"]),
     ],
     dependencies: [
         .package(name: "HTTP"),
