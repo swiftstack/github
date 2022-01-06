@@ -1,3 +1,5 @@
+import URL
+
 enum ApiError: Error {
     case commitRepositoryIsNil
     case invalidSetStatusResult
@@ -7,7 +9,7 @@ public struct GitHubApi {
     public let pullRequest: PullRequestApi
     public let status: StatusApi
 
-    static let baseURL = "https://api.github.com"
+    static let baseURL: URL = "https://api.github.com"
 
     public init(client: GitHubClient) {
         self.pullRequest = PullRequestApi(client: client)
