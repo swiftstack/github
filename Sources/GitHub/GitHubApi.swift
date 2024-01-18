@@ -18,17 +18,16 @@ public struct GitHubApi {
 
     public struct PullRequestApi {
         let client: GitHubClient
-        init(client: GitHubClient) {
-            self.client = client
-        }
 
         public func get(_ path: String) async throws -> PullRequest {
             return try await client.get(path: path)
         }
 
-        public func merge(_ pullRequest: PullRequest) async throws -> MergeResult {
+        public func merge(
+            _ pullRequest: PullRequest
+        ) async throws -> MergeResult {
             let url = pullRequest.url.appending("/merge")
-            var json = [String : String]()
+            var json = [String: String]()
             if let head = pullRequest.head {
                 json["sha"] = head.sha
             }
@@ -49,7 +48,11 @@ public struct GitHubApi {
             let targetUrl: String
             let context: String
 
-            public init(description: String, targetUrl: String, context: String) {
+            public init(
+                description: String,
+                targetUrl: String,
+                context: String
+            ) {
                 self.description = description
                 self.targetUrl = targetUrl
                 self.context = context
@@ -57,9 +60,6 @@ public struct GitHubApi {
         }
 
         let client: GitHubClient
-        init(client: GitHubClient) {
-            self.client = client
-        }
 
         struct UpdateStatus: Encodable {
             let state: String
@@ -75,7 +75,11 @@ public struct GitHubApi {
             }
         }
 
-        public func set(_ status: Status, info: StatusInfo, for commit: Commit) async throws {
+        public func set(
+            _ status: Status,
+            info: StatusInfo,
+            for commit: Commit
+        ) async throws {
             guard let name = commit.repo?.fullName else {
                 throw ApiError.commitRepositoryIsNil
             }
@@ -86,7 +90,9 @@ public struct GitHubApi {
                 description: info.description,
                 context: info.context)
 
-            let result: State = try await client.post(path: path, object: updateStatus)
+            let result: State = try await client.post(
+                path: path,
+                object: updateStatus)
             guard result.state == status.rawValue else {
                 throw ApiError.invalidSetStatusResult
             }

@@ -25,12 +25,18 @@ public class GitHubClient {
         return try await makeRequest(Request(url: URL(path), method: .get))
     }
 
-    func post<T: Encodable, U: Decodable>(path: String, object: T) async throws -> U {
+    func post<T: Encodable, U: Decodable>(
+        path: String,
+        object: T
+    ) async throws -> U {
         let request = try Request(url: URL(path), method: .post, body: object)
         return try await makeRequest(request)
     }
 
-    func put<T: Encodable, U: Decodable>(url: String, object: T) async throws -> U {
+    func put<T: Encodable, U: Decodable>(
+        url: String,
+        object: T
+    ) async throws -> U {
         let request = try Request(url: URL(url), method: .put, body: object)
         return try await makeRequest(request)
     }
