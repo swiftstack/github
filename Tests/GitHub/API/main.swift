@@ -3,7 +3,7 @@ import JSON
 
 @testable import GitHub
 
-test.case("UpdateStatus") {
+test("UpdateStatus") {
     let status = GitHubApi.StatusApi.UpdateStatus(
         state: "1",
         targetUrl: "2",
@@ -18,4 +18,4 @@ test.case("UpdateStatus") {
     expect(string == expected)
 }
 
-test.run()
+await run()
